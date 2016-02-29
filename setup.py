@@ -10,7 +10,7 @@ setup(
     name='ifmo-xqueue-api',
     version='0.2',
     install_requires=[
-        'functools', 'requests', 'json', 'hashlib', 'pytz'
+        'json', 'hashlib', 'pytz'
     ],
     packages=['xqueue_api'],
     include_package_data=True,
