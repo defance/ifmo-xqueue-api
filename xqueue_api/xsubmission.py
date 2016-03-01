@@ -30,6 +30,9 @@ class XSubmission(object):
 
     def _init_api_response(self, api_response):
 
+        # Десериализация
+        api_response = json.loads(api_response)
+
         # xqueue_files
         self.xqueue_files = json.loads(api_response['xqueue_files'])
 
