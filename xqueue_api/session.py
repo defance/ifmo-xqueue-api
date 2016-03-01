@@ -65,6 +65,12 @@ class XQueueSession(object):
                                   method="POST",
                                   data=data)
 
+    def put_xresult(self, submission):
+
+        assert isinstance(submission, XSubmission), "submission must be XSubmission instance"
+
+        self.put_result(data=submission.get_put_string())
+
     def submit(self, data):
 
         return self._make_request("/submit/",
