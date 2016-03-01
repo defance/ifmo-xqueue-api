@@ -24,6 +24,7 @@ class XSubmission(object):
         self.feedback = None
         self.grader = None
         self.correctness = False
+        self.grader_id = None
 
         if api_response is not None:
             self._init_api_response(api_response)
@@ -51,7 +52,7 @@ class XSubmission(object):
         self.is_graded = True
         self.grade = grade
         self.feedback = feedback
-        self.grader = grader
+        self.grader_id = grader
         self.correctness = correctness
 
     def get_put_string(self):
