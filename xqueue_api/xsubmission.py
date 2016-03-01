@@ -64,7 +64,7 @@ class XSubmission(object):
 
         xqueue_body = {
             'msg': self.feedback,
-            'correct': self.correct,
+            'correct': self.correctness,
             'score': self.grade,
             'grader_id': self.grader_id,
         }
