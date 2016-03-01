@@ -1,1 +1,0 @@
--e git+https://github.com/BillMills/python-package-example@24ec2e3#egg=python-package-example-0.1

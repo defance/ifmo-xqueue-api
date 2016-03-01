@@ -3,6 +3,7 @@ from requests import session
 from requests.exceptions import ConnectionError, Timeout
 
 import json
+from xsubmission import XSubmission
 
 
 class XQueueException(Exception):
@@ -49,6 +50,14 @@ class XQueueSession(object):
 
         return self._make_request("/get_submission/",
                                   data={'queue_name': queue})
+
+    def get_xsubmission(self, queue=None):
+
+        result, submission = self.get_submission(queue=queue)
+        if result:
+            return result, XSubmission(api_response=submission)
+        else:
+            return result, submission
 
     def put_result(self, data):
 
