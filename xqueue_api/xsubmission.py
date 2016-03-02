@@ -74,3 +74,38 @@ class XSubmission(object):
             'xqueue_header': json.dumps(xqueue_header),
             'xqueue_body': json.dumps(xqueue_body),
         }
+
+
+class XSubmissionResult(object):
+
+    def __init__(self, query_dict=None):
+
+        self.header = None
+        self.lms_key = None
+        self.lms_callback_url = None
+        self.queue_name = None
+
+        self.body = None
+        self.msg = None
+        self.score = None
+        self.correct = None
+        self.grader_id = None
+
+        if query_dict is not None:
+            self._init_query_dict(query_dict)
+
+    def _init_query_dict(self, query_dict):
+
+        self.header = query_dict.getfirst('xqueue_header')
+        header = json.loads(self.header)
+        self.lms_key = header['lms_key']
+        self.lms_callback_url = header['lms_callback_url']
+        self.queue_name = header['queue_name']
+
+        self.body = query_dict.getfirst('xqueue_body')
+        body = json.loads(self.body)
+        self.msg = body['msg']
+        self.score = body['score']
+        self.correct = body['correect']
+        self.grader_id = body['grader_id']
+
