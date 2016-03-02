@@ -96,16 +96,16 @@ class XSubmissionResult(object):
 
     def _init_query_dict(self, query_dict):
 
-        self.header = query_dict.getfirst('xqueue_header')
+        self.header = query_dict.get('xqueue_header')
         header = json.loads(self.header)
         self.lms_key = header['lms_key']
         self.lms_callback_url = header['lms_callback_url']
         self.queue_name = header['queue_name']
 
-        self.body = query_dict.getfirst('xqueue_body')
+        self.body = query_dict.get('xqueue_body')
         body = json.loads(self.body)
         self.msg = body['msg']
         self.score = body['score']
-        self.correct = body['correect']
+        self.correct = body['correct']
         self.grader_id = body['grader_id']
 
