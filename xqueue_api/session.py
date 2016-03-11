@@ -54,7 +54,7 @@ class XQueueSession(object):
 
     def get_xsubmission(self, queue=None, target_class=XObject):
 
-        assert isinstance(target_class, XObject)
+        assert issubclass(target_class, XObject)
 
         result, submission = self.get_submission(queue=queue)
         if result:
