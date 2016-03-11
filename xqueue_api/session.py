@@ -3,7 +3,8 @@ from requests import session
 from requests.exceptions import ConnectionError, Timeout
 
 import json
-from xsubmission import XSubmission
+from .xobject import XObject
+from .xsubmission import XSubmission
 
 
 class XQueueException(Exception):
@@ -51,11 +52,13 @@ class XQueueSession(object):
         return self._make_request("/get_submission/",
                                   data={'queue_name': queue})
 
-    def get_xsubmission(self, queue=None):
+    def get_xsubmission(self, queue=None, target_class=XObject):
+
+        assert isinstance(target_class, XObject)
 
         result, submission = self.get_submission(queue=queue)
         if result:
-            return result, XSubmission(api_response=submission)
+            return result, target_class(api_response=submission)
         else:
             return result, submission
 
@@ -67,7 +70,7 @@ class XQueueSession(object):
 
     def put_xresult(self, submission):
 
-        assert isinstance(submission, XSubmission), "submission must be XSubmission instance"
+        assert isinstance(submission, XObject), "submission must be XSubmission instance"
 
         self.put_result(data=submission.get_put_string())
 
