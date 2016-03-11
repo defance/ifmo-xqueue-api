@@ -29,7 +29,7 @@ class XSubmission(XObject):
         if hasattr(parent, 'init_api_response'):
             parent.init_api_response(api_response=api_response)
 
-        self.submission_id = header['submission_id']
+        self.submission_id = self.header['submission_id']
 
         # xqueue_body
         body = json.loads(self.body)
