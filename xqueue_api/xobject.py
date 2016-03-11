@@ -33,11 +33,6 @@ class XObject(object):
 
     def prepare_put(self):
 
-        parent = super(XSubmission, self)
-        result = {}
-        if hasattr(parent, 'prepare_put'):
-            result = parent.prepare_put()
-
         xqueue_header = {
             'submission_key': self.submission_key,
         }
