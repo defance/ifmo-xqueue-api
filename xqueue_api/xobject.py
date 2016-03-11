@@ -74,9 +74,9 @@ class XObjectResult(object):
     def init_query_dict(self, query_dict):
 
         self.header = json.loads(query_dict.get('xqueue_header'))
-        self.lms_key = header['lms_key']
-        self.lms_callback_url = header['lms_callback_url']
-        self.queue_name = header['queue_name']
+        self.lms_key = self.header['lms_key']
+        self.lms_callback_url = self.header['lms_callback_url']
+        self.queue_name = self.header['queue_name']
 
         self.body = query_dict.get('xqueue_body')
 
