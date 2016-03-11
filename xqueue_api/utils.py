@@ -2,6 +2,8 @@ from datetime import datetime
 import json
 import hashlib
 import pytz
+import collections
+
 
 dateformat = '%Y%m%d%H%M%S'
 
@@ -37,23 +39,6 @@ def make_hashkey(seed):
     return h.hexdigest()
 
 
-def make_xheader(lms_callback_url, lms_key, queue_name):
-    """
-    Generate header for delivery and reply of queue request.
-
-    Xqueue header is a JSON-serialized dict:
-        { 'lms_callback_url': url to which xqueue will return the request (string),
-          'lms_key': secret key used by LMS to protect its state (string),
-          'queue_name': designate a specific queue within xqueue server, e.g. 'MITx-6.00x' (string)
-        }
-    """
-    return json.dumps({
-        'lms_callback_url': lms_callback_url,
-        'lms_key': lms_key,
-        'queue_name': queue_name
-    })
-
-
 def now():
     return datetime.now(pytz.UTC).strftime(dateformat)
 
@@ -66,3 +51,16 @@ def default_time(fn):
         kwargs['qtime'] = qtime
         return fn(*args, **kwargs)
     return default_timed
+
+
+def deep_update(d, u):
+    for k, v in u.iteritems():
+        if isinstance(d, collections.Mapping):
+            if isinstance(v, collections.Mapping):
+                r = update(d.get(k, {}), v)
+                d[k] = r
+            else:
+                d[k] = u[k]
+        else:
+            d = {k: u[k]}
+    return d

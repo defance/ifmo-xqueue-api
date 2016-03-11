@@ -1,49 +1,36 @@
 # -*- coding=utf-8 -*-
 
 import json
+from utils import deep_update
+from xobject import XObjectResult, XObject
 
 
-class XSubmission(object):
+class XSubmission(XObject):
     """
     Пользовательское решение, полученное через метод api get_submission.
     """
 
-    def __init__(self, api_response=None):
+    # Данные, полученные от xqueue
+    submission_id = None
+    grader_payload = None
+    student_info = {}
+    student_response = None
 
-        # Данные, полученные от xqueue
-        self.xqueue_files = {}
-        self.submission_id = None
-        self.submission_key = None
-        self.grader_payload = None
-        self.student_info = {}
-        self.student_response = None
+    # Данные, записываемые при оценивании
+    is_graded = False
+    grade = 0
+    feedback = None
+    correctness = False
+    grader_id = None
 
-        # Данные, записываемые при оценивании
-        self.is_graded = False
-        self.grade = 0
-        self.feedback = None
-        self.grader = None
-        self.correctness = False
-        self.grader_id = None
+    def init_api_response(self, api_response):
 
-        if api_response is not None:
-            self._init_api_response(api_response)
+        super(XSubmission, self).init_api_response(api_response=api_response)
 
-    def _init_api_response(self, api_response):
-
-        # Десериализация
-        api_response = json.loads(api_response)
-
-        # xqueue_files
-        self.xqueue_files = json.loads(api_response['xqueue_files'])
-
-        # xqueue_header
-        header = json.loads(api_response['xqueue_header'])
         self.submission_id = header['submission_id']
-        self.submission_key = header['submission_key']
 
         # xqueue_body
-        body = json.loads(api_response['xqueue_body'])
+        body = json.loads(self.body)
         self.grader_payload = body['grader_payload']
         self.student_info = json.loads(body['student_info'])
         self.student_response = body['student_response']
@@ -55,12 +42,17 @@ class XSubmission(object):
         self.grader_id = grader
         self.correctness = correctness
 
-    def get_put_string(self):
-        assert self.is_graded, "Submission must be graded first"
+    def prepare_put(self):
+
+        assert self.is_graded, "XSubmission should be graded first"
+
+        parent = super(XSubmission, self)
+        result = {}
+        if hasattr(parent, 'prepare_put'):
+            result = parent.prepare_put()
 
         xqueue_header = {
             'submission_id': self.submission_id,
-            'submission_key': self.submission_key,
         }
 
         xqueue_body = {
@@ -70,39 +62,25 @@ class XSubmission(object):
             'grader_id': self.grader_id,
         }
 
-        return {
-            'xqueue_header': json.dumps(xqueue_header),
-            'xqueue_body': json.dumps(xqueue_body),
-        }
+        return deep_update(result, {
+            'xqueue_header': xqueue_header,
+            'xqueue_body': xqueue_body,
+        })
 
 
-class XSubmissionResult(object):
+class XSubmissionResult(XObjectResult):
 
-    def __init__(self, query_dict=None):
+    msg = None
+    score = None
+    correct = None
+    grader_id = None
 
-        self.header = None
-        self.lms_key = None
-        self.lms_callback_url = None
-        self.queue_name = None
+    def init_query_dict(self, query_dict):
 
-        self.body = None
-        self.msg = None
-        self.score = None
-        self.correct = None
-        self.grader_id = None
+        parent = super(XSubmissionResult, self)
+        if hasattr(parent, 'init_query_dict'):
+            parent.init_query_dict()
 
-        if query_dict is not None:
-            self._init_query_dict(query_dict)
-
-    def _init_query_dict(self, query_dict):
-
-        self.header = query_dict.get('xqueue_header')
-        header = json.loads(self.header)
-        self.lms_key = header['lms_key']
-        self.lms_callback_url = header['lms_callback_url']
-        self.queue_name = header['queue_name']
-
-        self.body = query_dict.get('xqueue_body')
         body = json.loads(self.body)
         self.msg = body['msg']
         self.score = body['score']
