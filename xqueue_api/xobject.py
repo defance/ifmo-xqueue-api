@@ -17,8 +17,6 @@ class XObject(object):
 
     def __init__(self, api_response=None):
 
-        super(XObject, self).__init__(api_response=api_response)
-
         if api_response is not None:
             self.init_api_response(json.loads(api_response))
 

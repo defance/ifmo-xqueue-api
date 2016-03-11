@@ -25,7 +25,9 @@ class XSubmission(XObject):
 
     def init_api_response(self, api_response):
 
-        super(XSubmission, self).init_api_response(api_response=api_response)
+        parent = super(XSubmission, self)
+        if hasattr(parent, 'init_api_response'):
+            parent.init_api_response(api_response=api_response)
 
         self.submission_id = header['submission_id']
 
