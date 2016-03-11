@@ -33,6 +33,8 @@ class XObject(object):
 
     def prepare_put(self):
 
+        result = {}
+
         xqueue_header = {
             'submission_key': self.submission_key,
         }
