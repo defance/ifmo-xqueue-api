@@ -81,7 +81,7 @@ class XSubmissionResult(XObjectResult):
 
         parent = super(XSubmissionResult, self)
         if hasattr(parent, 'init_query_dict'):
-            parent.init_query_dict()
+            parent.init_query_dict(query_dict=query_dict)
 
         body = json.loads(self.body)
         self.msg = body['msg']
