@@ -52,7 +52,7 @@ class XQueueSession(object):
         return self._make_request("/get_submission/",
                                   data={'queue_name': queue})
 
-    def get_xsubmission(self, queue=None, target_class=XObject):
+    def get_xobject(self, queue=None, target_class=XObject):
 
         assert issubclass(target_class, XObject)
 

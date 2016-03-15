@@ -8,6 +8,7 @@ class XObject(object):
     """
     Пользовательское решение, полученное через метод api get_submission.
     """
+    api_response = None
     header = None
     submission_key = None
 
@@ -15,12 +16,17 @@ class XObject(object):
 
     xqueue_files = {}
 
-    def __init__(self, api_response=None):
+    def __init__(self, api_response=None, xobject=None):
 
         if api_response is not None:
             self.init_api_response(json.loads(api_response))
 
+        if xobject is not None:
+            self.init_xobject(xobject)
+
     def init_api_response(self, api_response):
+
+        self.api_response = api_response
 
         # xqueue_header
         self.header = json.loads(api_response['xqueue_header'])
@@ -30,6 +36,17 @@ class XObject(object):
 
         # xqueue_files
         self.xqueue_files = json.loads(api_response['xqueue_files'])
+
+    def init_xobject(self, xobject):
+
+        assert isubclass(xobject, XObject)
+
+        self.init_api_response(api_response=xobject.api_response)
+
+    @classmethod
+    def create_from_xobject(cls, xobject):
+        new = cls(xobject=xobject)
+        return new
 
     def prepare_put(self):
 

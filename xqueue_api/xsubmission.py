@@ -88,4 +88,3 @@ class XSubmissionResult(XObjectResult):
         self.score = body['score']
         self.correct = body['correct']
         self.grader_id = body['grader_id']
-
