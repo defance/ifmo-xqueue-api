@@ -11,7 +11,6 @@ class XSubmission(XObject):
     """
 
     # Данные, полученные от xqueue
-    submission_id = None
     grader_payload = None
     student_info = {}
     student_response = None
@@ -28,8 +27,6 @@ class XSubmission(XObject):
         parent = super(XSubmission, self)
         if hasattr(parent, 'init_api_response'):
             parent.init_api_response(api_response=api_response)
-
-        self.submission_id = self.header['submission_id']
 
         # xqueue_body
         body = json.loads(self.body)
@@ -54,7 +51,6 @@ class XSubmission(XObject):
             result = parent.prepare_put()
 
         xqueue_header = {
-            'submission_id': self.submission_id,
         }
 
         xqueue_body = {

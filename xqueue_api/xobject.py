@@ -10,11 +10,14 @@ class XObject(object):
     """
     api_response = None
     header = None
+    submission_id = None
     submission_key = None
 
     body = None
 
     xqueue_files = {}
+
+    feedback = ''
 
     def __init__(self, api_response=None, xobject=None):
 
@@ -30,6 +33,7 @@ class XObject(object):
 
         # xqueue_header
         self.header = json.loads(api_response['xqueue_header'])
+        self.submission_id = self.header['submission_id']
         self.submission_key = self.header['submission_key']
 
         self.body = api_response['xqueue_body']
@@ -39,7 +43,7 @@ class XObject(object):
 
     def init_xobject(self, xobject):
 
-        assert isubclass(xobject, XObject)
+        assert isinstance(xobject, XObject)
 
         self.init_api_response(api_response=xobject.api_response)
 
@@ -53,10 +57,12 @@ class XObject(object):
         result = {}
 
         xqueue_header = {
+            'submission_id': self.submission_id,
             'submission_key': self.submission_key,
         }
 
         xqueue_body = {
+            'feedback': self.feedback,
         }
 
         return deep_update(result, {

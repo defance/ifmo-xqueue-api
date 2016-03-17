@@ -70,7 +70,7 @@ class XQueueSession(object):
 
     def put_xresult(self, submission):
 
-        assert isinstance(submission, XObject), "submission must be XSubmission instance"
+        assert isinstance(submission, XObject), "submission must be XObject instance"
 
         self.put_result(data=submission.get_put_string())
 
