@@ -34,12 +34,13 @@ class XSubmission(XObject):
         self.student_info = json.loads(body['student_info'])
         self.student_response = body['student_response']
 
-    def set_grade(self, grade, feedback=None, grader=None, correctness=False):
+    def set_grade(self, grade=0, feedback=None, grader=None, correctness=False):
         self.is_graded = True
         self.grade = grade
         self.feedback = feedback
         self.grader_id = grader
         self.correctness = correctness
+        return self
 
     def prepare_put(self):
 
