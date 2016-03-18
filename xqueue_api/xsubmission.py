@@ -1,8 +1,9 @@
 # -*- coding=utf-8 -*-
 
 import json
-from utils import deep_update
-from xobject import XObjectResult, XObject
+
+from .utils import deep_update
+from .xobject import XObjectResult, XObject
 
 
 class XSubmission(XObject):

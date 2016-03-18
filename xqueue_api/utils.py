@@ -1,8 +1,9 @@
-from datetime import datetime
 import json
 import hashlib
 import pytz
 import collections
+
+from datetime import datetime
 
 
 dateformat = '%Y%m%d%H%M%S'

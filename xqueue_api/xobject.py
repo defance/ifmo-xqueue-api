@@ -1,7 +1,8 @@
 # -*- coding=utf-8 -*-
 
 import json
-from utils import deep_update
+
+from .utils import deep_update
 
 
 class XObject(object):

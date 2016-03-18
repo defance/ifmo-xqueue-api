@@ -1,8 +1,10 @@
+import json
+
 from functools import partial
+
 from requests import session
 from requests.exceptions import ConnectionError, Timeout
 
-import json
 from .xobject import XObject
 from .xsubmission import XSubmission
 
