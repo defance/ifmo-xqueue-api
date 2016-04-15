@@ -22,6 +22,7 @@ class XSubmission(XObject):
     feedback = None
     correctness = False
     grader_id = None
+    success = None
 
     def init_api_response(self, api_response):
 
@@ -35,12 +36,13 @@ class XSubmission(XObject):
         self.student_info = json.loads(body['student_info'])
         self.student_response = body['student_response']
 
-    def set_grade(self, grade=0, feedback=None, grader=None, correctness=False):
+    def set_grade(self, grade=0, feedback=None, grader=None, correctness=False, success=False):
         self.is_graded = True
         self.grade = grade
         self.feedback = feedback
         self.grader_id = grader
         self.correctness = correctness
+        self.success = success
         return self
 
     def prepare_put(self):
@@ -60,6 +62,7 @@ class XSubmission(XObject):
             'correct': self.correctness,
             'score': self.grade,
             'grader_id': self.grader_id,
+            'success': self.success,
         }
 
         return deep_update(result, {
