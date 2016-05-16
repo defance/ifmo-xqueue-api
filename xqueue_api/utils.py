@@ -56,7 +56,7 @@ def default_time(fn):
 
 def deep_update(d, u):
     for k, v in u.iteritems():
-        if isinstance(d, collections.Mapping):
+        if isinstance(d, collections.MutableMapping):
             if isinstance(v, collections.Mapping):
                 r = deep_update(d.get(k, {}), v)
                 d[k] = r
