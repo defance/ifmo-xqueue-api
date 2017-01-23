@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='ifmo-xqueue-api',
-    version='4.1.1',
+    version='4.2',
     install_requires=[
         'pytz'
     ],
