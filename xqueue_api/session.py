@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+
 import json
 import logging
 
@@ -22,7 +26,7 @@ class XQueueSession(object):
     base_url = None
     authorized = False
     session = None
-    timeout = 15
+    timeout = 60
     queue = None
 
     def __init__(self, base_url=None, username=None, password=None, autoconnect=False, queue=None):
