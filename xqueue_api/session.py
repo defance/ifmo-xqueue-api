@@ -1,4 +1,5 @@
 import json
+import logging
 
 from functools import partial
 
@@ -7,6 +8,9 @@ from requests.exceptions import ConnectionError, Timeout
 
 from .xobject import XObject
 from .xsubmission import XSubmission
+
+
+logger = logging.getLogger(__name__)
 
 
 class XQueueException(Exception):
@@ -30,6 +34,7 @@ class XQueueSession(object):
             self.authorized, _ = self.login(username, password)
 
     def login(self, username, password):
+        logger.info('Авторизация в queue (имя пользователя: {})'.format(username))
         return self._make_request("/login/",
                                   method="POST",
                                   data={"username": username, "password": password})
@@ -39,11 +44,12 @@ class XQueueSession(object):
         if queue is None:
             queue = self.queue
 
+        logger.info('Получение длины очереди {}'.format(queue))
         return self._make_request("/get_queuelen/",
                                   data={'queue_name': queue})
 
     def logout(self):
-
+        logger.info('Выход из системы')
         return self._make_request("/logout/")
 
     def get_submission(self, queue=None):
@@ -51,6 +57,7 @@ class XQueueSession(object):
         if queue is None:
             queue = self.queue
 
+        logger.info('Получение пользовательского решения в очереди {}'.format(queue))
         return self._make_request("/get_submission/",
                                   data={'queue_name': queue})
 
@@ -66,6 +73,7 @@ class XQueueSession(object):
 
     def put_result(self, data):
 
+        logger.info('Отправка результата проверки')
         return self._make_request("/put_result/",
                                   method="POST",
                                   data=data)
@@ -96,12 +104,15 @@ class XQueueSession(object):
         request_url = self.base_url + url
 
         try:
+            logger.debug('Отправка запроса: [{}] {}'.format(method, request_url))
+            logger.debug(data)
             response = request_method(request_url, timeout=self.timeout)
         except ConnectionError or Timeout:
             error_message = "Connection error to %s" % request_url
             return False, error_message
 
         if response.status_code not in [200]:
+            logger.error('Неверный код ответа сервера: ожидался 200, получен {}'.format(response.status_code))
             error_message = "Server %s returned status_code=%d" % (request_url, response.status_code)
             return False, error_message
 
@@ -113,6 +124,7 @@ class XQueueSession(object):
             error_message = "Could not get response from http object."
             return False, error_message
 
+        logger.debug('Ответ сервера: [{}] {}'.format(response.status_code, text))
         return self._parse_xreply(text)
 
     @staticmethod
