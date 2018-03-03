@@ -38,7 +38,7 @@ class XQueueSession(object):
             self.authorized, _ = self.login(username, password)
 
     def login(self, username, password):
-        logger.info('Авторизация в queue (имя пользователя: {})'.format(username))
+        logger.debug('Авторизация в queue (имя пользователя: {})'.format(username))
         return self._make_request("/login/",
                                   method="POST",
                                   data={"username": username, "password": password})
@@ -48,12 +48,12 @@ class XQueueSession(object):
         if queue is None:
             queue = self.queue
 
-        logger.info('Получение длины очереди {}'.format(queue))
+        logger.debug('Получение длины очереди {}'.format(queue))
         return self._make_request("/get_queuelen/",
                                   data={'queue_name': queue})
 
     def logout(self):
-        logger.info('Выход из системы')
+        logger.debug('Выход из системы')
         return self._make_request("/logout/")
 
     def get_submission(self, queue=None):
@@ -61,7 +61,7 @@ class XQueueSession(object):
         if queue is None:
             queue = self.queue
 
-        logger.info('Получение пользовательского решения в очереди {}'.format(queue))
+        logger.debug('Получение пользовательского решения в очереди {}'.format(queue))
         return self._make_request("/get_submission/",
                                   data={'queue_name': queue})
 
@@ -77,7 +77,7 @@ class XQueueSession(object):
 
     def put_result(self, data):
 
-        logger.info('Отправка результата проверки')
+        logger.debug('Отправка результата проверки')
         return self._make_request("/put_result/",
                                   method="POST",
                                   data=data)
